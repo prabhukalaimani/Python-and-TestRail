@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
+# ஆசிரியர்  : பிரபு கலைமணி
+# பயன்பாடு : இந்த கோப்பு காண்பிக் பைலை  குறியீட்டு நீக்கம்  செய்யும்
 # FileName : ConfigParser
-# Author : Prabhu Kalaimani
-# Usage : This file will read the config.ini file and will return the key
+# usage : This file will read the config.ini file and will return the key
 # Date : 12/14/2017
 ##############################################################################
 
