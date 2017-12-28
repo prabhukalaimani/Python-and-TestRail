@@ -32,7 +32,7 @@ class MyParser():
         """
         ret_value = ""
         try:
-            ret_value = self.conf_hanle.get("Server_Config", "server_url")
+            ret_value = self.conf_hanle.get(section, key)
         except Exception:
             ret_value = "key not found in section of the ini file. Please check the secontion and key"
         return ret_value
@@ -56,9 +56,9 @@ class TestConfigParser:
         :return:
         """
         section_val = "Server_Config"
-        key_val = "server_pass"
+        key_val = "user_password"
         val = self.handle.retrive_value(section_val, key_val)
-        assert val in "www.tigers.com" "Value could not be extracted"
+        assert val == 12345,  "Value could not be extracted"
 
     def test_conf_sections(self):
         """

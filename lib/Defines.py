@@ -121,6 +121,8 @@ TR_KEY_FILE_NAME = "file_name"
 TR_KEY_CLASS_NAME = "class_name"
 TR_KEY_TESTPLAN_DESCRIPTION = "description"
 
-# TestRail API methods
-TR_API_METHOD_GET = "get"
-TR_API_METHOD_POST = "post"
+# Config literals
+CFG_SERVER_CONFIG = "Server_Config"
+CFG_SERVER_URL = "server_url"
+CFG_USER_ID = "user_id"
+CFG_USER_PASSWD = "user_password"

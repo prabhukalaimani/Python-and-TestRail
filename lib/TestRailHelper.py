@@ -9,6 +9,7 @@
 ##############################################################################
 from testrail import *
 import Defines as Def
+import ConfigParser as Cp
 
 
 class TestRailHelper:
@@ -39,10 +40,9 @@ class TestRailHelper:
             ret_status = False
         return ret_status, ret_msg
 
-    def tr_send_get(self, method, api_string, data):
+    def tr_send_get(self, api_string, data):
         """
         This is will call the api using get method
-        :param method: api to be called using get method
         :param api_string: api name
         :param data: optional parameters
         :return:
@@ -60,12 +60,16 @@ class TestRailHelper:
 class TestTRHelper:
     @classmethod
     def setup_class(cls):
-        cls.tr = TestRailHelper("https://tigers.testrail.io/", "guest@tigers.com", "12345")
+        cls.con_par = Cp.MyParser("..\config.ini")
+        server_ip = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_SERVER_URL )
+        uid = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_ID )
+        u_pass = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_PASSWD )
+        cls.tr = TestRailHelper("https://tigers.testrail.io", "guest@tigers.com", 12345)
 
     # Test for checking get method
     def test_get_post_method_get(self):
         test_case_id = 1 # case id in the testrail
-        ret, value = self.tr.tr_send_get(Def.TR_API_METHOD_GET, Def.TR_API_GET_CASES, test_case_id)
+        ret, value = self.tr.tr_send_get(Def.TR_API_GET_CASES, test_case_id)
         print value
         assert ret is True, "Failed get method"
 
