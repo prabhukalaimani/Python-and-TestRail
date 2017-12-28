@@ -7,29 +7,65 @@
 # usage : This file will read the config.ini file and will return the key
 # Date : 12/14/2017
 ##############################################################################
+from testrail import *
+import Defines as Def
 
 
 class TestRailHelper:
-    def __init__(self):
-        self.server_url = ""
-        self.server_password = ""
+    def __init__(self, server_url, server_user, server_password):
+        try:
+            self.trclient = APIClient(server_url)
+            self.trclient.user = server_user
+            self.trclient.password = server_password
+        except (KeyError, IOError):
+            raise IOError("TestRail not configured properly..Please check the credentials")
 
-    def get_testplans(self, project_id):
-        pass
+    def tr_send_post(self, method, api_string, dict_data):
+        """
+        This is the wrapper method for the send_post method.
+        :param method: post method to be called
+        This method will use the post to add or modify a parameter or field.
+        :param api_string: post method to be called
+        :param dict_data: optional parameters in dictionary format
+        :return:
+        """
+        # TODO: Format the post data as required
+        param_data = dict_data
+        try:
+            ret_msg = self.trclient.send_post(api_string, param_data)
+            ret_status = True
+        except Exception as e:
+            ret_msg = "Error in calling Post method for API {}\\n Error Message = {} ".format(api_string, e.message)
+            ret_status = False
+        return ret_status, ret_msg
 
-    def get_case(self, caseid):
-        pass
-
-    def get_testcases(self, runid):
-        pass
-
-    def get_testcase_value(self, tcid):
-        pass
+    def tr_send_get(self, method, api_string, data):
+        """
+        This is will call the api using get method
+        :param method: api to be called using get method
+        :param api_string: api name
+        :param data: optional parameters
+        :return:
+        """
+        param_data = api_string + "/" + str(data)
+        try:
+            ret_msg = self.trclient.send_get(param_data)
+            ret_status = True
+        except Exception as e:
+            ret_msg = "Error in calling get method for API {}\\n Eroor Message = {} ".format(api_string, e.message)
+            ret_status = False
+        return ret_status, ret_msg
 
 # Unit testing the helper library
 class TestTRHelper:
     @classmethod
     def setup_class(cls):
-        cls.server_url = ""
-        cls.server_password = ""
-        pass
+        cls.tr = TestRailHelper("https://tigers.testrail.io/", "guest@tigers.com", "12345")
+
+    # Test for checking get method
+    def test_get_post_method_get(self):
+        test_case_id = 1 # case id in the testrail
+        ret, value = self.tr.tr_send_get(Def.TR_API_METHOD_GET, Def.TR_API_GET_CASES, test_case_id)
+        print value
+        assert ret is True, "Failed get method"
+
