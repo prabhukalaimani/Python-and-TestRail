@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 # ஆசிரியர்  : பிரபு கலைமணி
-# பயன்பாடு : இந்த கோப்பு
-# FileName : Defines
-# usage : This file has all the defines used in the code
+# பயன்பாடு : இந்த கோப்பில்  குறிமுறைகாண சர மதிப்புருக்கள் இருக்கின்றது
+# File Name : Defines
+# usage : This file has all the string literals used in the code
 # Date : 12/16/2017
 ##############################################################################
 
@@ -62,9 +62,9 @@ TR_API_DELETE_PROJECT = "delete_project"
 # TestRail API defines for result
 TR_API_GET_RESULTS = "get_results"
 TR_API_GET_RESULTS_FOR_CASE = "get_results_for_case"
-TR_API_GET_RESULTS_FOR_RUN  = "get_results_for_run"
+TR_API_GET_RESULTS_FOR_RUN = "get_results_for_run"
 TR_API_ADD_RESULT = "add_result"
-TR_API_ADD_RESULT_CASE = "add_result_for_case"
+TR_API_ADD_RESULT_FOR_CASE = "add_result_for_case"
 TR_API_ADD_RESULTS = "add_results"
 TR_API_ADD_RESULTS_FOR_CASES = "add_results_for_cases"
 
@@ -107,3 +107,20 @@ TR_API_GET_TESTS = "get_tests"
 TR_API_GET_USER = "get_user"
 TR_API_GET_USER_BY_EMAIL = "get_user_by_email"
 TR_API_GET_USERS = "get_users"
+
+# Dictionary Keys ( defined in TestRail )
+TR_KEY_TITLE = "title"
+TR_KEY_RUNS = "runs"
+TR_KEY_ID = "id"
+TR_KEY_PLAN_STATUS = "status"
+TR_KEY_PLAN_ID = "plan_id"
+TR_KEY_CASE_ID = "case_id"
+TR_KEY_CASE_REFERENCE = "refs"
+TR_KEY_RUN_ID = "run_id"
+TR_KEY_FILE_NAME = "file_name"
+TR_KEY_CLASS_NAME = "class_name"
+TR_KEY_TESTPLAN_DESCRIPTION = "description"
+
+# TestRail API methods
+TR_API_METHOD_GET = "get"
+TR_API_METHOD_POST = "post"
