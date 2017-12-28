@@ -21,22 +21,18 @@ class TestRailHelper:
         except (KeyError, IOError):
             raise IOError("TestRail not configured properly..Please check the credentials")
 
-    def tr_send_post(self, method, api_string, dict_data):
-        """
-        This is the wrapper method for the send_post method.
-        :param method: post method to be called
-        This method will use the post to add or modify a parameter or field.
-        :param api_string: post method to be called
-        :param dict_data: optional parameters in dictionary format
-        :return:
-        """
-        # TODO: Format the post data as required
-        param_data = dict_data
+    def tr_send_post(self, api_param, dict_data={}):
+        tmp_string = ""
+        param_string = ""
+        for itm in api_param:
+            tmp_string = tmp_string + itm + "/"
+        # Remove the last / from the string
+        param_string = tmp_string[:-1]
         try:
-            ret_msg = self.trclient.send_post(api_string, param_data)
+            ret_msg = self.trclient.send_post(param_string, dict_data)
             ret_status = True
         except Exception as e:
-            ret_msg = "Error in calling Post method for API {}\\n Error Message = {} ".format(api_string, e.message)
+            ret_msg = "Error in calling Post method for API {}\\n Error Message = {} ".format(param_string, e.message)
             ret_status = False
         return ret_status, ret_msg
 
@@ -67,9 +63,21 @@ class TestTRHelper:
         u_pass = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_PASSWD )
         cls.tr = TestRailHelper("https://tigers.testrail.io", "guest@tigers.com", 12345)
 
-    # Test for checking get method
-    def test_get_post_method_get(self):
+    # Test for get method
+    def test_method_get(self):
         test_case_id = 1 # case id in the testrail
         ret, value = self.tr.tr_send_get(Def.TR_API_GET_CASES, test_case_id)
         print value
         assert ret is True, "Failed get method"
+
+    # Test for post method
+    def test_method_post(self):
+        runid = "1"
+        caseid = "1"
+        status_id = 1  # pass
+        comment = "Test passed"
+        ret, ret_msg = self.tr.tr_send_post( [Def.TR_API_ADD_RESULT_FOR_CASE, "4", "2"] , { 'status_id': 1, 'comment': 'This test worked fine!' })
+        print ret_msg
+        assert ret is True, "Failed to update the test case"
+
+
