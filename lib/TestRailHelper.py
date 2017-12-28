@@ -60,6 +60,7 @@ class TestRailHelper:
 class TestTRHelper:
     @classmethod
     def setup_class(cls):
+        # Using the parser extract the credentials
         cls.con_par = Cp.MyParser("..\config.ini")
         server_ip = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_SERVER_URL )
         uid = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_ID )
@@ -72,4 +73,3 @@ class TestTRHelper:
         ret, value = self.tr.tr_send_get(Def.TR_API_GET_CASES, test_case_id)
         print value
         assert ret is True, "Failed get method"
-
