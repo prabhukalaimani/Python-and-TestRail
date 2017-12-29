@@ -126,3 +126,6 @@ CFG_SERVER_CONFIG = "Server_Config"
 CFG_SERVER_URL = "server_url"
 CFG_USER_ID = "user_id"
 CFG_USER_PASSWD = "user_password"
+
+# Test result dictionary
+TR_DICT_RESULT = {'pass':1, 'blocked':2, 'untested':3, 'retest':4, 'fail':5 }
