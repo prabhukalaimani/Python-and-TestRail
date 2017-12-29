@@ -22,10 +22,20 @@ class TestRailHelper:
             raise IOError("TestRail not configured properly..Please check the credentials")
 
     def tr_send_post(self, api_param, dict_data={}):
+        """
+        This is a wrapper method for calling the API using post method.
+        This uses api params which is a list and dict_data which is a
+        dictionary object based on the API
+        :param api_param: parameters that is passed with the API
+        :param dict_data: dictionary of optional parameters
+        :return: ret_status, ret_msg
+                 ret_status : Boolean ( True or False)
+                 ret_msg : message from the API call
+        """
         tmp_string = ""
         param_string = ""
         for itm in api_param:
-            tmp_string = tmp_string + itm + "/"
+            tmp_string = tmp_string + str(itm) + "/"
         # Remove the last / from the string
         param_string = tmp_string[:-1]
         try:
@@ -36,16 +46,27 @@ class TestRailHelper:
             ret_status = False
         return ret_status, ret_msg
 
-    def tr_send_get(self, api_string, data):
+    def tr_send_get(self, api_string, data_list):
         """
-        This is will call the api using get method
-        :param api_string: api name
-        :param data: optional parameters
-        :return:
+        This is a wrapper method for send_get. The input parameters are sent
+        as list.The list data are formatted and then passed on to the
+        Api method.
+        :param api_string: API to be called using the get method
+        :param data_list: list of input parameters
+        :return: ret_status, ret_msg
+                 ret_status : Boolean ( True or False)
+                 ret_msg : message from the API call
         """
-        param_data = api_string + "/" + str(data)
+        param_string = ""
+        tmp_string = ""
+        # format the input parameters from the list
+        for itm in data_list:
+            tmp_string = tmp_string + str(itm) + "/"
+        # Remove the last '/' from the string
+        param_string = tmp_string[:-1]
+        # call the get method
         try:
-            ret_msg = self.trclient.send_get(param_data)
+            ret_msg = self.trclient.send_get(api_string + "/" + param_string)
             ret_status = True
         except Exception as e:
             ret_msg = "Error in calling get method for API {}\\n Eroor Message = {} ".format(api_string, e.message)
@@ -64,19 +85,23 @@ class TestTRHelper:
         cls.tr = TestRailHelper("https://tigers.testrail.io", "guest@tigers.com", 12345)
 
     # Test for get method
-    def test_method_get(self):
-        test_case_id = 1 # case id in the testrail
-        ret, value = self.tr.tr_send_get(Def.TR_API_GET_CASES, test_case_id)
+    def test_method_get_1(self):
+        test_case_id = "1" # case id in the testrail
+        ret, value = self.tr.tr_send_get(Def.TR_API_GET_CASES, [test_case_id])
         print value
         assert ret is True, "Failed get method"
 
+    # Test for get method for multiple input params
+    def test_method_get_2(self):
+        test_case_id = 2
+        test_run_id = 4
+        ret, ret_val = self.tr.tr_send_get(Def.TR_API_GET_RESULTS_FOR_CASE, [test_run_id, test_case_id])
+        print ret_val
+        assert ret is True, "Error in getting the results for test case"
+
     # Test for post method
-    def test_method_post(self):
-        runid = "1"
-        caseid = "1"
-        status_id = 1  # pass
-        comment = "Test passed"
-        ret, ret_msg = self.tr.tr_send_post( [Def.TR_API_ADD_RESULT_FOR_CASE, "4", "2"] , { 'status_id': 1, 'comment': 'This test worked fine!' })
+    def test_method_post_1(self):
+        ret, ret_msg = self.tr.tr_send_post( [Def.TR_API_ADD_RESULT_FOR_CASE, 4, "2"] , { 'status_id': 1, 'comment': 'This test worked fine!' })
         print ret_msg
         assert ret is True, "Failed to update the test case"
 
