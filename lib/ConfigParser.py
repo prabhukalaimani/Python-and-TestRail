@@ -9,9 +9,9 @@
 
 import configparser
 import os
-import pytest
 
-class MyParser():
+
+class MyParser:
     """
     This class contains the method required for file parser
     """
@@ -23,18 +23,20 @@ class MyParser():
         self.conf_hanle = configparser.ConfigParser()
         self.conf_hanle.read(self.config_file)
 
-
     def retrive_value(self, section, key):
         """
-        This function will retrieve value of the key present in the config.ini file
+        This function will retrieve value of the key present in the
+        config.ini file
+        :param section: Name of the section in the ini file
         :param key: Key in the config file
         :return: value for the key
         """
-        ret_value = ""
         try:
             ret_value = self.conf_hanle.get(section, key)
-        except Exception:
-            ret_value = "key not found in section of the ini file. Please check the secontion and key"
+        except Exception as e:
+            ret_value = "key not found in section of the ini file." \
+                        "Please check the secontion and key\n" \
+                        "Error Msg: {}".format(e.message)
         return ret_value
 
     def get_sections(self):
