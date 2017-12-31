@@ -129,3 +129,12 @@ CFG_USER_PASSWD = "user_password"
 
 # Test result dictionary
 TR_DICT_RESULT = {'pass': 1, 'blocked': 2, 'untested': 3, 'retest': 4, 'fail': 5}
+
+# TestCase attributes ( NOTE: Modify or add new attributes based on your TestRail settings)
+# These are the field names of a test case
+TR_TC_FIELD_STATUS_ID = 'status_id'
+TR_TC_FIELD_COMMENT = 'comment'
+TR_TC_FIELD_ELAPSED = 'elapsed'
+TR_TC_FIELD_VERSION = 'version'
+TR_TC_FIELD_DEFECTS = 'defects'
+TR_TC_FIELD_ASSIGNED_TO_ID = 'assignedto_id'

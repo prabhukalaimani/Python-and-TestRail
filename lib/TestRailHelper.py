@@ -74,7 +74,7 @@ class TestRailHelper:
     def tr_post_test_result(self, test_id, test_result, comment=None, elapsed="0s", version=None, defects=None,
                             assigned_to_id=None):
         """
-        This method will post the result to the TestRail.
+        This method will post the result of a test case to the TestRail.
         :param test_id: Testcase id starts with TXXXX eg ( T31)
         :param test_result: pass, fail, retest, untested, blocked
         :param comment: pass or failure reason or observations
@@ -87,9 +87,9 @@ class TestRailHelper:
         """
         test_result = Def.TR_DICT_RESULT[test_result.lower()]
 
-        optional_params = {'status_id': test_result, 'comment': comment,
-                           'elapsed': elapsed, 'version': version,
-                           'defects': defects, 'assignedto_id': assigned_to_id}
+        optional_params = {Def.TR_TC_FIELD_STATUS_ID: test_result, Def.TR_TC_FIELD_COMMENT: comment,
+                           Def.TR_TC_FIELD_ELAPSED: elapsed, Def.TR_TC_FIELD_VERSION: version,
+                           Def.TR_TC_FIELD_DEFECTS: defects, Def.TR_TC_FIELD_ASSIGNED_TO_ID: assigned_to_id}
         try:
             ret_msg = self.tr_send_post([Def.TR_API_ADD_RESULT, str(test_id)], optional_params)
             ret_status = True
@@ -98,6 +98,9 @@ class TestRailHelper:
                       " {}\nError Message = {}".format(test_id, e.message)
             ret_status = False
         return ret_status, ret_msg
+    # def get_list_of_tc_for_runid(self)
+    # def collect_all_testcase_for_plan(self, plan_id):
+
 
 
 # Unit testing the helper library
