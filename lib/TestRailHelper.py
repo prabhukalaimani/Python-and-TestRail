@@ -196,7 +196,17 @@ class TestTRHelper:
     def test_stats_planid(self):
         plan_id = 3
         ret_val, ret_dict = self.tr.get_stats_of_testplan(plan_id)
-        print ret_dict
+        total_test = ret_dict[Def.TR_STATS_TOTAL_TESTS]
+        test_executed = total_test - ( ret_dict[Def.TR_STATS_PASSED] + ret_dict[Def.TR_STATS_FAILED] + ret_dict[Def.TR_STATS_BLOCKED] + ret_dict[Def.TR_STATS_RETEST] )
+
+        print ("\n ######################################## \n")
+        print ("Percentage of Untested = {} %".format((test_executed * 100 / total_test)))
+        print ("\nTotal Test = {}\nPassed = {}\nFailed = {}\nBlocked = {}".format(
+            ret_dict[Def.TR_STATS_TOTAL_TESTS],
+            ret_dict[Def.TR_STATS_PASSED],
+            ret_dict[Def.TR_STATS_FAILED],
+            ret_dict[Def.TR_STATS_BLOCKED]
+        ))
         assert ret_val is True, "Error in getting the information"
 
     # Test for retriving all test for a run
