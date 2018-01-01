@@ -135,6 +135,51 @@ class TestRailHelper:
             ret_val = True
         return ret_val, ret_msg
 
+    def get_stats_of_testplan(self, plan_id):
+        ret_dict = {}
+        total_test_runs = 0
+        test_case_list = []
+        test_passed = 0
+        test_failed = 0
+        test_blocked = 0
+        test_retest = 0
+        total_tests = 0
+
+        ret_val, ret_msg = self.get_list_of_runid_for_plan(plan_id)
+        if Def.TR_ERROR_CALLING_API in ret_msg:
+            ret_val = False
+        else:
+            total_test_runs = len(ret_msg)  # Find the total run ids for a plan
+            ret_dict[Def.TR_STATS_TOTAL_RUNS] = total_test_runs
+            # store the run id list
+            ret_dict[Def.TR_STATS_RUN_ID_LIST] = ret_msg
+
+            # Get the test list of test case names for all the run ids
+            for run in ret_msg:
+                ret_val, ret_msg = self.get_list_of_tests_for_run(run)
+                total_tests += len(ret_msg)
+                if ret_val:
+                    for tc in ret_msg:
+                        test_case_list.append(tc[Def.TR_KEY_TITLE])
+                        # find if the status of the test
+                        if tc[Def.TR_TC_FIELD_STATUS_ID] == 1:
+                            test_passed += 1
+                        elif tc[Def.TR_TC_FIELD_STATUS_ID] == 2:
+                            test_blocked += 1
+                        elif tc[Def.TR_TC_FIELD_STATUS_ID] == 4:
+                            test_blocked += 1
+                        elif tc[Def.TR_TC_FIELD_STATUS_ID] == 5:
+                            test_failed += 1
+
+            # fill up test case list
+            ret_dict[Def.TR_STATS_TOTAL_TESTS] = total_tests
+            ret_dict[Def.TR_STATS_TC_LIST] = test_case_list
+            ret_dict[Def.TR_STATS_FAILED] = test_failed
+            ret_dict[Def.TR_STATS_PASSED] = test_passed
+            ret_dict[Def.TR_STATS_BLOCKED] = test_blocked
+            ret_dict[Def.TR_STATS_RETEST] = test_retest
+
+        return ret_val, ret_dict
 
 # Unit testing the helper library
 class TestTRHelper:
@@ -146,6 +191,13 @@ class TestTRHelper:
         uid = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_ID)
         u_pass = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_PASSWD)
         cls.tr = TestRailHelper(server_ip, uid, u_pass)
+
+    # Test for stats
+    def test_stats_planid(self):
+        plan_id = 3
+        ret_val, ret_dict = self.tr.get_stats_of_testplan(plan_id)
+        print ret_dict
+        assert ret_val is True, "Error in getting the information"
 
     # Test for retriving all test for a run
     def test_get_tests(self):
