@@ -145,3 +145,15 @@ TR_TEST_PLAN_ENTRIES = "entries"
 
 # Error Messages
 TR_ERROR_CALLING_API = "HTTP 400"
+
+# Test Stats fields
+TR_STATS_TOTAL_RUNS = "total_runs"
+TR_STATS_TOTAL_TESTS = "total_tests"
+TR_STATS_RUN_ID_LIST = "run_id_list"
+TR_STATS_TC_LIST = "tc_list"
+TR_STATS_PASSED = "passed"
+TR_STATS_FAILED = "failed"
+TR_STATS_RETEST = "retest"
+TR_STATS_BLOCKED = "blocked"
+
+
