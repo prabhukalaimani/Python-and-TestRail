@@ -98,10 +98,28 @@ class TestRailHelper:
                       " {}\nError Message = {}".format(test_id, e.message)
             ret_status = False
         return ret_status, ret_msg
-    # def get_list_of_tc_for_runid(self)
-    # def collect_all_testcase_for_plan(self, plan_id):
+
+    def get_list_of_runid_for_plan(self, plan_id):
+        """
+        This method will get all the runid for a test plan
+        :param plan_id: plan id
+        :return: ret_val: Boolean
+                 ret_msg: return a list of run ids for the plan or empty list
+        """
+        runid_list = []
+        ret_val, ret_msg = self.tr_send_get(Def.TR_API_GET_PLAN, [plan_id])
+        if Def.TR_ERROR_CALLING_API in ret_msg:
+            ret_val = False
+            ret_msg = []
+        else:
+            tmp_list = ret_msg[Def.TR_TEST_PLAN_ENTRIES]
+            for plan_list in tmp_list:
+                run = plan_list[Def.TR_KEY_RUNS]
+                runid_list.append(run[0][Def.TR_KEY_ID])
+        return ret_val, ret_msg
 
 
+    def get_list_of_testcases_for_test
 
 # Unit testing the helper library
 class TestTRHelper:
@@ -113,6 +131,20 @@ class TestTRHelper:
         uid = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_ID)
         u_pass = cls.con_par.retrive_value(Def.CFG_SERVER_CONFIG, Def.CFG_USER_PASSWD)
         cls.tr = TestRailHelper(server_ip, uid, u_pass)
+
+    # Test for getting all runid Positive test case
+    def test_get_runid(self):
+        runid = 3
+        ret_val, ret_msg = self.tr.get_list_of_runid_for_plan(runid)
+        print ret_msg
+        assert ret_val is True, "Error in getting the runid"
+
+    # Test for getting all runid negative test case
+    def test_get_runid(self):
+        runid = 4  # This is an invalid runid
+        ret_val, ret_msg = self.tr.get_list_of_runid_for_plan(runid)
+        print ret_msg
+        assert ret_val is False, "Error in getting the runid"
 
     # Test for posting result
     def test_post_result_for_testcase(self):

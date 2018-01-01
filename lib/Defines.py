@@ -138,3 +138,10 @@ TR_TC_FIELD_ELAPSED = 'elapsed'
 TR_TC_FIELD_VERSION = 'version'
 TR_TC_FIELD_DEFECTS = 'defects'
 TR_TC_FIELD_ASSIGNED_TO_ID = 'assignedto_id'
+
+# Test plan attributes
+TR_TEST_PLAN_ENTRIES = "entries"
+
+
+# Error Messages
+TR_ERROR_CALLING_API = "HTTP 400"
