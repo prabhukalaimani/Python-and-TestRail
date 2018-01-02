@@ -67,7 +67,7 @@ class TestRailHelper:
             ret_msg = self.trclient.send_get(api_string + "/" + param_string)
             ret_status = True
         except Exception as e:
-            ret_msg = "Error in calling get method for API {}\\n Eroor Message = {} ".format(api_string, e.message)
+            ret_msg = "Error in calling get method for API {}\n Error Message = {} ".format(api_string, e.message)
             ret_status = False
         return ret_status, ret_msg
 
@@ -110,14 +110,12 @@ class TestRailHelper:
         ret_val, ret_msg = self.tr_send_get(Def.TR_API_GET_PLAN, [plan_id])
         if Def.TR_ERROR_CALLING_API in ret_msg:
             ret_val = False
-            ret_msg = []
         else:
             tmp_list = ret_msg[Def.TR_TEST_PLAN_ENTRIES]
             for plan_list in tmp_list:
                 run = plan_list[Def.TR_KEY_RUNS]
                 runid_list.append(run[0][Def.TR_KEY_ID])
-            ret_msg = runid_list
-        return ret_val, ret_msg
+        return ret_val, ret_msg, runid_list
 
     def get_list_of_tests_for_run(self, run_id):
         """
@@ -145,21 +143,21 @@ class TestRailHelper:
         test_retest = 0
         total_tests = 0
 
-        ret_val, ret_msg = self.get_list_of_runid_for_plan(plan_id)
+        ret_val, ret_msg, run_id_list = self.get_list_of_runid_for_plan(plan_id)
         if Def.TR_ERROR_CALLING_API in ret_msg:
             ret_val = False
         else:
-            total_test_runs = len(ret_msg)  # Find the total run ids for a plan
+            total_test_runs = len(run_id_list)  # Find the total run ids for a plan
             ret_dict[Def.TR_STATS_TOTAL_RUNS] = total_test_runs
             # store the run id list
-            ret_dict[Def.TR_STATS_RUN_ID_LIST] = ret_msg
+            ret_dict[Def.TR_STATS_RUN_ID_LIST] = run_id_list
 
             # Get the test list of test case names for all the run ids
-            for run in ret_msg:
-                ret_val, ret_msg = self.get_list_of_tests_for_run(run)
-                total_tests += len(ret_msg)
+            for run in run_id_list:
+                ret_val, run_id_list = self.get_list_of_tests_for_run(run)
+                total_tests += len(run_id_list)
                 if ret_val:
-                    for tc in ret_msg:
+                    for tc in run_id_list:
                         test_case_list.append(tc[Def.TR_KEY_TITLE])
                         # find if the status of the test
                         if tc[Def.TR_TC_FIELD_STATUS_ID] == 1:
@@ -179,7 +177,7 @@ class TestRailHelper:
             ret_dict[Def.TR_STATS_BLOCKED] = test_blocked
             ret_dict[Def.TR_STATS_RETEST] = test_retest
 
-        return ret_val, ret_dict
+        return ret_val, ret_msg, ret_dict
 
 # Unit testing the helper library
 class TestTRHelper:
@@ -194,14 +192,19 @@ class TestTRHelper:
 
     # Test for stats
     def test_stats_planid(self):
-        plan_id = 3
-        ret_val, ret_dict = self.tr.get_stats_of_testplan(plan_id)
+        plan_id = 8
+        ret_val, ret_msg, ret_dict = self.tr.get_stats_of_testplan(plan_id)
+        assert ret_val is True, "Error in getting test plan\n Error = {}".format(ret_msg)
         total_test = ret_dict[Def.TR_STATS_TOTAL_TESTS]
         test_executed = total_test - ( ret_dict[Def.TR_STATS_PASSED] + ret_dict[Def.TR_STATS_FAILED] + ret_dict[Def.TR_STATS_BLOCKED] + ret_dict[Def.TR_STATS_RETEST] )
 
-        print ("\n ######################################## \n")
-        print ("Percentage of Untested = {} %".format((test_executed * 100 / total_test)))
-        print ("\nTotal Test = {}\nPassed = {}\nFailed = {}\nBlocked = {}".format(
+        print ("\n ################################################################# \n")
+        if test_executed > 0:
+            tmp_result = (test_executed * 100 / total_test)
+        else:
+            tmp_result = 0
+        print ("Percentage of Untested = {}%".format(tmp_result))
+        print ("\nUnTested = {}\nPassed = {}\nFailed = {}\nBlocked = {}".format(
             ret_dict[Def.TR_STATS_TOTAL_TESTS],
             ret_dict[Def.TR_STATS_PASSED],
             ret_dict[Def.TR_STATS_FAILED],
@@ -236,7 +239,7 @@ class TestTRHelper:
 
     # Test for posting result
     def test_post_result_for_testcase(self):
-        ret, ret_val = self.tr.tr_post_test_result(31, "Fail", "Failed executing test", "10s")
+        ret, ret_val = self.tr.tr_post_test_result(47, "Pass", "Passed executing test", "20s")
         print (ret_val)
         assert ret is True, "Error in posting result"
 
