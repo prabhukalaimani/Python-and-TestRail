@@ -135,7 +135,6 @@ class TestRailHelper:
 
     def get_stats_of_testplan(self, plan_id):
         ret_dict = {}
-        total_test_runs = 0
         test_case_list = []
         test_passed = 0
         test_failed = 0
@@ -179,7 +178,7 @@ class TestRailHelper:
 
         return ret_val, ret_msg, ret_dict
 
-# Unit testing the helper library
+
 class TestTRHelper:
     @classmethod
     def setup_class(cls):
@@ -196,7 +195,10 @@ class TestTRHelper:
         ret_val, ret_msg, ret_dict = self.tr.get_stats_of_testplan(plan_id)
         assert ret_val is True, "Error in getting test plan\n Error = {}".format(ret_msg)
         total_test = ret_dict[Def.TR_STATS_TOTAL_TESTS]
-        test_executed = total_test - ( ret_dict[Def.TR_STATS_PASSED] + ret_dict[Def.TR_STATS_FAILED] + ret_dict[Def.TR_STATS_BLOCKED] + ret_dict[Def.TR_STATS_RETEST] )
+        test_executed = total_test - (ret_dict[Def.TR_STATS_PASSED] +
+                                      ret_dict[Def.TR_STATS_FAILED] +
+                                      ret_dict[Def.TR_STATS_BLOCKED] +
+                                      ret_dict[Def.TR_STATS_RETEST])
 
         print ("\n ################################################################# \n")
         if test_executed > 0:
@@ -215,7 +217,7 @@ class TestTRHelper:
     # Test for retriving all test for a run
     def test_get_tests(self):
         run_id = 3  # This test plan has three run ids
-        ret_val, tmp_list = self.tr.get_list_of_runid_for_plan(run_id)
+        ret_val, ret_msg, tmp_list = self.tr.get_list_of_runid_for_plan(run_id)
         for itm in tmp_list:
             print ("\nRun id = {}\n".format(itm))
             ret_val, ret_msg = self.tr.get_list_of_tests_for_run(itm)
@@ -226,15 +228,15 @@ class TestTRHelper:
     # Test for getting all runid Positive test case
     def test_get_runid_positive(self):
         run_id = 3
-        ret_val, ret_msg = self.tr.get_list_of_runid_for_plan(run_id)
-        print ret_msg
+        ret_val, ret_msg, tmp_list = self.tr.get_list_of_runid_for_plan(run_id)
+        print tmp_list
         assert ret_val is True, "Error in getting the run id"
 
     # Test for getting all runid negative test case
     def test_get_runid_negative(self):
         run_id = 4  # This is an invalid run_id
-        ret_val, ret_msg = self.tr.get_list_of_runid_for_plan(run_id)
-        print ret_msg
+        ret_val, ret_msg, tmp_list = self.tr.get_list_of_runid_for_plan(run_id)
+        print tmp_list
         assert ret_val is False, "Error in getting the run_id"
 
     # Test for posting result
