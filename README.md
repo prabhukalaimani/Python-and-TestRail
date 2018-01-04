@@ -28,4 +28,4 @@ http://docs.gurock.com/testrail-admin/installation-unix வலயத்தளத
 ## பரிசோதனை
 TestRailHelper.py கோப்பில் TestTRHelper  கிளாஸ்சில் சோதனைகள் உள்ளது . இதை பயன்படுத்த
 கட்டளை வரியில் pytest -s TestRailHelper.py என்று  உள்ளீடவும்
-            r`
+
