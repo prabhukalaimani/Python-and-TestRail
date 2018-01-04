@@ -18,7 +18,7 @@ https://secure.gurock.com/customers/testrail/trial/  வலயத்தளத்
 என்ற விருப்பத்தைதேர்வு செய்யவும்.ட்ரயல்  பிரிவில் உங்களுடைய  விருப்பத்தை உள்ளீடவும்
 
 
-### Alt-H1  ரயில் சேவையக அமைப்பு
+### ரயில் சேவையக அமைப்பு
 டெஸ்ட் ரயில் சேவையகத்தை  வலயத்தளத்தில்  இருந்து பதிவிறக்கம் செய்யவும்
 http://docs.gurock.com/testrail-admin/installation-windows அல்லது 
 http://docs.gurock.com/testrail-admin/installation-unix வலயத்தளத்தில் கொடுக்கப்பட்டுள்ள 
