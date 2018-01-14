@@ -17,13 +17,11 @@
 https://secure.gurock.com/customers/testrail/trial/  வலயத்தளத்தில் சென்று டெஸ்ட் ரயில் கிளவுட் 
 என்ற விருப்பத்தைதேர்வு செய்யவும்.ட்ரயல்  பிரிவில் உங்களுடைய  விருப்பத்தை உள்ளீடவும்
 
-
 ### ரயில் சேவையக அமைப்பு
 டெஸ்ட் ரயில் சேவையகத்தை  வலயத்தளத்தில்  இருந்து பதிவிறக்கம் செய்யவும்
 http://docs.gurock.com/testrail-admin/installation-windows அல்லது 
 http://docs.gurock.com/testrail-admin/installation-unix வலயத்தளத்தில் கொடுக்கப்பட்டுள்ள 
 செயல்முறையை பின்பற்றி, சேவையகத்தை  அமைவடிமம்   செய்யவும்
-
 
 ## பரிசோதனை
 TestRailHelper.py கோப்பில் TestTRHelper  கிளாஸ்சில் சோதனைகள் உள்ளது . இதை பயன்படுத்த
